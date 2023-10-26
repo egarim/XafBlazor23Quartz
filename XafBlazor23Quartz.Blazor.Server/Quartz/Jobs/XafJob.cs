@@ -17,16 +17,16 @@ namespace XafBlazor23Quartz.Blazor.Server.Quartz.Jobs
     public class XafJob : IJob
     {
 
-        private readonly ILogger<XafJob> _logger;
-        private readonly IServiceProvider _provider;
-        string cnx;
+        protected readonly ILogger<XafJob> _logger;
+        protected readonly IServiceProvider _provider;
+        protected string cnx;
         public XafJob(ILogger<XafJob> logger, IServiceProvider provider)
         {
             _logger = logger;
             _provider = provider;
         }
 
-        public Task Execute(IJobExecutionContext context)
+        public virtual Task Execute(IJobExecutionContext context)
         {
             //XpoDirect();
 

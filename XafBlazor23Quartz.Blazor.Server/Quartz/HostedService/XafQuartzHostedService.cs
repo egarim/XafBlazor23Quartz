@@ -36,6 +36,7 @@ namespace XafBlazorQuartzHostedService.Module.Blazor.Quartz
         }
         public IScheduler Scheduler { get; set; }
 
+        public bool Started { get; set; }
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             Scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
@@ -60,9 +61,27 @@ namespace XafBlazorQuartzHostedService.Module.Blazor.Quartz
 
             foreach (var item in Schedules)
             {
-                var jobSchedule = new JobSchedule(
-                    jobType: typeof(XafJob),
-                    cronExpression: item.Expression);
+
+                if(item.JobType==null)
+                    continue;
+
+                if (!item.Enable)
+                    continue;
+
+
+                JobSchedule jobSchedule = null;
+                if (item.JobType.TypeName=="Job1")
+                {
+                     jobSchedule = new JobSchedule(
+                   jobType: typeof(Job1),
+                   cronExpression: item.Expression);
+                }
+                if (item.JobType.TypeName == "Job2")
+                {
+                    jobSchedule = new JobSchedule(
+                   jobType: typeof(Job2),
+                   cronExpression: item.Expression);
+                }
 
 
                 IDictionary<string, object> map = new Dictionary<string, object>()
@@ -80,6 +99,7 @@ namespace XafBlazorQuartzHostedService.Module.Blazor.Quartz
 
 
                 await Scheduler.ScheduleJob(job, trigger, cancellationToken);
+                Started = true;
             }
 
       
@@ -90,6 +110,7 @@ namespace XafBlazorQuartzHostedService.Module.Blazor.Quartz
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             await Scheduler?.Shutdown(cancellationToken);
+            Started = false;
         }
 
         private static IJobDetail CreateJob(JobSchedule schedule, JobDataMap DataMap)

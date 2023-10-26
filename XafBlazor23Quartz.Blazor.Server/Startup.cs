@@ -107,7 +107,8 @@ public class Startup {
 
         //// Add our job
         services.AddSingleton<XafJob>();
-
+        services.AddSingleton<Job1>();
+        services.AddSingleton<Job2>();
         //services.AddSingleton(new JobSchedule(
         //    jobType: typeof(XafJob),
         //    cronExpression: "0/5 * * * * ?")); // run every 5 seconds

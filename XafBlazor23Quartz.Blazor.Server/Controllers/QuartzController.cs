@@ -28,32 +28,49 @@ namespace XafBlazorQuartz2.Module.Blazor.Controllers
     public partial class QuartzController : ViewController
     {
         SimpleAction RestartScheduler;
+
         public QuartzController()
         {
             InitializeComponent();
-          
-            SimpleAction EnableJob = new SimpleAction(this, nameof(EnableJob), PredefinedCategory.View) { Caption = "Enable Job" };
-            EnableJob.Execute += EnableJob_Execute;
 
 
-            SimpleAction DisableJob = new SimpleAction(this, nameof(DisableJob), PredefinedCategory.View) { Caption = "Disable Job" };
-            DisableJob.Execute += DisableJob_Execute;
-           
+            RestartScheduler = new SimpleAction(this, nameof(RestartScheduler), PredefinedCategory.View) { Caption = "Restart Scheduler" };
+            RestartScheduler.Execute += RestartScheduler_Execute;
+
+
+            SimpleAction StartScheduler = new SimpleAction(this, nameof(StartScheduler), PredefinedCategory.View) { Caption = "Start Scheduler" };
+            StartScheduler.Execute += StartScheduler_Execute;
+
+
+            SimpleAction StopScheduler = new SimpleAction(this, nameof(StopScheduler), PredefinedCategory.View) { Caption = "Stop Scheduler" };
+            StopScheduler.Execute += StopScheduler_Execute;
+
+
+
         }
-        private async void DisableJob_Execute(object sender, SimpleActionExecuteEventArgs e)
+        private async void RestartScheduler_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             IServiceProvider serviceProvider = ((BlazorApplication)Application).ServiceProvider;
             var Service = serviceProvider.GetService<XafQuartzHostedService>();
-
+         
             await Service.StopAsync(new System.Threading.CancellationToken());
+            await Service.StartAsync(new System.Threading.CancellationToken());
         }
-        private async void EnableJob_Execute(object sender, SimpleActionExecuteEventArgs e)
+
+        private async void StopScheduler_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             IServiceProvider serviceProvider = ((BlazorApplication)Application).ServiceProvider;
             var Service = serviceProvider.GetService<XafQuartzHostedService>();
+            if(Service.Started)
+                await Service.StopAsync(new System.Threading.CancellationToken());
+        }
+        private async void StartScheduler_Execute(object sender, SimpleActionExecuteEventArgs e)
+        {
+            IServiceProvider serviceProvider = ((BlazorApplication)Application).ServiceProvider;
+            var Service = serviceProvider.GetService<XafQuartzHostedService>();
+            if (!Service.Started)
+                await Service.StartAsync(new System.Threading.CancellationToken());
 
-            await Service.StartAsync(new System.Threading.CancellationToken());
-            
 
         }
 
