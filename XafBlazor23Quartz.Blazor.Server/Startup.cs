@@ -99,13 +99,13 @@ public class Startup {
         services.AddSingleton<IJobFactory, SingletonJobFactory>();
         services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
-        //Register types for the objectspace, this is needed for the job to be able to create/read objects
+        //TODO egister types for the objectspace, this is needed for the job to be able to create/read objects
         List<Type> types = new List<Type>();
         types.Add(typeof(DomainObject1));
         types.Add(typeof(ScheduleBase));
         services.AddSingleton(typeof(IQuartzObjectSpaceService), new QuartzObjectSpaceService(types, Configuration.GetConnectionString("ConnectionString")));
 
-        //// Add our job
+        ////TODO register Jobs
         services.AddSingleton<XafJob>();
         services.AddSingleton<Job1>();
         services.AddSingleton<Job2>();
