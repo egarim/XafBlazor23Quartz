@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using XafBlazor23Quartz.Blazor.Server.Quartz.Jobs;
 using XafBlazor23Quartz.Blazor.Server.Quartz.ObjectSpaceService;
+using XafBlazor23Quartz.Module.BusinessObjects;
 using XafBlazorQuartzHostedService.Module.Blazor.Quartz;
 using XafBlazorQuartzHostedService.Module.BusinessObjects;
 
@@ -74,13 +75,15 @@ namespace XafBlazorQuartzHostedService.Module.Blazor.Quartz
                 {
                      jobSchedule = new JobSchedule(
                    jobType: typeof(Job1),
-                   cronExpression: item.Expression);
+                   cronExpression: item.Expression,
+                   triggerType:item.TriggerType);
                 }
                 if (item.JobType.TypeName == "Job2")
                 {
                     jobSchedule = new JobSchedule(
                    jobType: typeof(Job2),
-                   cronExpression: item.Expression);
+                   cronExpression: item.Expression,
+                   triggerType: item.TriggerType);
                 }
 
 
@@ -124,14 +127,31 @@ namespace XafBlazorQuartzHostedService.Module.Blazor.Quartz
                 .Build();
         }
 
+
         private static ITrigger CreateTrigger(JobSchedule schedule)
         {
-            return TriggerBuilder
-                .Create()
-                .WithIdentity($"{schedule.JobType.FullName}.trigger")
-                .WithCronSchedule(schedule.CronExpression)
-                .WithDescription(schedule.CronExpression)
-                .Build();
+            switch (schedule.TriggerType)
+            {
+                case TriggerType.CronExpression:
+                    return TriggerBuilder
+                   .Create()
+                   .WithIdentity($"{schedule.JobType.FullName}.trigger")
+                   .WithCronSchedule(schedule.CronExpression)
+                   .WithDescription(schedule.CronExpression)
+                   .Build();
+                  
+                case TriggerType.DateTrigger:
+                    return TriggerBuilder
+                   .Create()
+                   .WithIdentity($"{schedule.JobType.FullName}.trigger")
+                   .StartAt(schedule.StartTime)
+                   .WithDescription(schedule.CronExpression)
+                   .Build();
+
+
+            }
+            return null;
+           
         }
     }
 }

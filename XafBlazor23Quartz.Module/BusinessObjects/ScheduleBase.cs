@@ -23,20 +23,13 @@ namespace XafBlazorQuartzHostedService.Module.BusinessObjects
         public override void AfterConstruction()
         {
             base.AfterConstruction();
-            //this.Monday = true;
-            //this.Tuesday = true;
-            //this.Wednesday = true;
-            //this.Thursday = true;
-            //this.Friday = true;
-            //this.EveryHour = true;
-            //this.EveryMinute = true;
-            //this.Saturday = true;
-            //this.Sunday = true;
-            // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
+           
         }
 
 
 
+        DateTime executeAt;
+        TriggerType triggerType;
         bool enable;
         JobType jobType;
         bool everyMonth;
@@ -48,117 +41,22 @@ namespace XafBlazorQuartzHostedService.Module.BusinessObjects
         bool everySecond;
         string expressionDescription;
         private bool manualExpression;
-        #region DaysOfTheWeek
+  
 
 
-        //bool everyDayOfTheWeek;
-        //public bool EveryDayOfTheWeek
-        //{
-        //    get => everyDayOfTheWeek;
-        //    set => SetPropertyValue(nameof(EveryDayOfTheWeek), ref everyDayOfTheWeek, value);
-        //}
 
-        //private bool monday;
+        public TriggerType TriggerType
+        {
+            get => triggerType;
+            set => SetPropertyValue(nameof(TriggerType), ref triggerType, value);
+        }
 
-        //public bool Monday
-        //{
-        //    get
-        //    {
-        //        return monday;
-        //    }
-        //    set
-        //    {
-        //        SetPropertyValue(nameof(Monday), ref monday, value);
-        //    }
-        //}
-
-        //private bool tuesday;
-
-        //public bool Tuesday
-        //{
-        //    get
-        //    {
-        //        return tuesday;
-        //    }
-        //    set
-        //    {
-        //        SetPropertyValue(nameof(Tuesday), ref tuesday, value);
-        //    }
-        //}
-
-        //private bool wednesday;
-
-        //public bool Wednesday
-        //{
-        //    get
-        //    {
-        //        return wednesday;
-        //    }
-        //    set
-        //    {
-        //        SetPropertyValue(nameof(Wednesday), ref wednesday, value);
-        //    }
-        //}
-
-        //private bool thursday;
-
-        //public bool Thursday
-        //{
-        //    get
-        //    {
-        //        return thursday;
-        //    }
-        //    set
-        //    {
-        //        SetPropertyValue(nameof(Thursday), ref thursday, value);
-        //    }
-        //}
-
-        //private bool friday;
-
-        //public bool Friday
-        //{
-        //    get
-        //    {
-        //        return friday;
-        //    }
-        //    set
-        //    {
-        //        SetPropertyValue(nameof(Friday), ref friday, value);
-        //    }
-        //}
-
-        //private bool saturday;
-
-        //public bool Saturday
-        //{
-        //    get
-        //    {
-        //        return saturday;
-        //    }
-        //    set
-        //    {
-        //        SetPropertyValue(nameof(Saturday), ref saturday, value);
-        //    }
-        //}
-
-        //private bool sunday;
-
-        //public bool Sunday
-        //{
-        //    get
-        //    {
-        //        return sunday;
-        //    }
-        //    set
-        //    {
-        //        SetPropertyValue(nameof(Sunday), ref sunday, value);
-        //    }
-        //}
-
-
-        #endregion
-
+        
+        public DateTime ExecuteAt
+        {
+            get => executeAt;
+            set => SetPropertyValue(nameof(ExecuteAt), ref executeAt, value);
+        }
         private string expression;
 
         [Size(SizeAttribute.DefaultStringMappingFieldSize)]
